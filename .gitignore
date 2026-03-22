@@ -48,9 +48,11 @@ long_videos/
 !examples/**/*.mov
 !examples/**/*.avi
 
-# Test files
+# Test files (except examples)
 test_*.py
 *_test.py
+!examples/**/test_*.py
+!examples/**/*_test.py
 .pytest_cache/
 .coverage
 htmlcov/

@@ -550,5 +550,171 @@ except Exception as e:
 
 ---
 
+---
+
+## 🔥 2026-03-23 新增踩坑记录
+
+### 坑 16：首尾帧 API 参数名错误
+
+**问题**: 调用 `create_task_with_first_last_frames` 时参数名错误
+
+```python
+# ❌ 错误用法
+video.create_task(
+    first_image="frame1.jpg",  # 参数名错误
+    last_image="frame2.jpg",
+    ...
+)
+```
+
+**解决方案**: 使用正确的参数名
+
+```python
+# ✅ 正确用法
+video.create_task_with_first_last_frames(
+    first_frame_path="frame1.jpg",  # 正确参数名
+    last_frame_path="frame2.jpg",
+    prompt="流畅过渡",
+    model="ep-20260227022253-b67vh",
+    watermark=False,
+    duration=12
+)
+```
+
+**教训**: 仔细阅读 SDK 文档，不要猜测参数名
+
+---
+
+### 坑 17：TTS 旧账号额度耗尽
+
+**问题**: TTS 调用返回 `quota exceeded for types: text_words_lifetime`
+
+```python
+# ❌ 错误：旧账号额度已用完
+APP_ID = "4394970266"  # 报错 quota exceeded
+```
+
+**解决方案**: 使用新账号
+
+```python
+# ✅ 正确：新账号有额度
+APP_ID = "3019120872"
+ACCESS_TOKEN = "qcdGrSiKz8_8qTkHo1whQREW48QPWT6I"
+RESOURCE_ID = "seed-tts-2.0"
+```
+
+**教训**: 
+- 监控 TTS 剩余额度
+- 准备备用账号
+- 新账号记录在 MEMORY.md
+
+---
+
+### 坑 18：TTS 端点选择错误
+
+**问题**: 使用 WebSocket 端点，复杂且容易出错
+
+```python
+# ❌ 复杂方案
+url = "wss://openspeech.bytedance.com/api/v3/tts/ws"
+# 需要处理 WebSocket 连接、消息等
+```
+
+**解决方案**: 使用 HTTP SSE 端点
+
+```python
+# ✅ 简单方案
+url = "https://openspeech.bytedance.com/api/v3/tts/unidirectional/sse"
+
+headers = {
+    "X-Api-App-Id": APP_ID,
+    "X-Api-Access-Key": ACCESS_TOKEN,
+    "X-Api-Resource-Id": RESOURCE_ID,
+    "Content-Type": "application/json"
+}
+
+payload = {
+    "user": {"uid": "user_001"},
+    "req_params": {
+        "speaker": "zh_female_xiaohe_uranus_bigtts",
+        "text": text,
+        "audio_params": {"format": "mp3", "sample_rate": 24000}
+    }
+}
+
+response = requests.post(url, headers=headers, json=payload, stream=True)
+```
+
+**教训**: 优先选择简单的 HTTP 方案，避免 WebSocket 复杂度
+
+---
+
+### 坑 19：TTS 音色名称与模型不匹配
+
+**问题**: 1.0 音色用于 2.0 模型，返回错误
+
+```python
+# ❌ 错误：1.0 音色
+speaker = "zh_female_xiaohe_uranus"  # 缺少 bigtts 后缀
+```
+
+**解决方案**: 使用正确的 2.0 音色名称
+
+```python
+# ✅ 正确：2.0 音色带 bigtts 后缀
+speaker = "zh_female_xiaohe_uranus_bigtts"  # 小何 2.0
+```
+
+**推荐 2.0 音色**:
+- `zh_female_xiaohe_uranus_bigtts` - 小何 2.0 (知性女声) ⭐
+- `zh_female_linjianvhai_uranus_bigtts` - 邻家女孩 2.0
+- `zh_female_liuchangnv_uranus_bigtts` - 流畅女声 2.0
+- `zh_female_cancan_uranus_bigtts` - 知性灿灿 2.0
+
+**教训**: 音色名称必须与模型版本匹配
+
+---
+
+### 坑 20：无限时长视频 chaining 注意事项
+
+**问题**: 首尾帧 chaining 生成无限时长视频时的注意事项
+
+**解决方案**:
+
+1. **相邻关键帧差异控制**
+   - 差异不能太大，否则过渡生硬
+   - 建议每帧之间只有场景/动作的渐进变化
+
+2. **片段时长设置**
+   - 每个片段 8-12 秒
+   - 太短：过渡不明显
+   - 太长：可能变形
+
+3. **合并命令**
+   ```bash
+   # 使用 -c copy 避免重新编码
+   ffmpeg -f concat -safe 0 -i concat_list.txt -c copy output.mp4
+   ```
+
+**测试成功案例**:
+- 5 个片段，每个约 5 秒
+- 合并后 25.65 秒，30MB
+- 过渡流畅，无硬切痕迹
+
+**教训**: chaining 方案可行，但需要控制好关键帧差异
+
+---
+
+## 📚 相关文档
+
+- [项目完整档案](项目完整档案.md)
+- [README](README.md)
+- [SKILL](SKILL.md)
+- [MAINTENANCE_GUIDE](MAINTENANCE_GUIDE.md)
+- [短视频全流程技能](../active_skills/short_video_production/SKILL.md)
+
+---
+
 **最后更新**: 2026-03-23  
 **维护者**: 扛枪 / 小咪
+**版本**: 1.1 (新增 5 个踩坑记录)
