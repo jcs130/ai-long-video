@@ -1,0 +1,331 @@
+# 🎬 AI 一致性视频生成 (AI-Video-Consistent)
+
+> **首尾帧精确控制 + 角色一致性 + 12 秒长视频** - 商业级 AI 视频生成工具
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![Volcengine](https://img.shields.io/badge/Powered%20by-Volcengine-orange)](https://www.volcengine.com/)
+
+---
+
+## ✨ 核心特性
+
+### 🎯 首尾帧精确控制
+
+**业界领先的首尾帧生成功能**，支持关键帧插值：
+
+- ✅ **首帧控制** - 指定视频开头画面（Logo/产品/人物）
+- ✅ **尾帧控制** - 指定视频结尾画面（二维码/联系方式/CTA）
+- ✅ **流畅过渡** - AI 自动生成中间帧，过渡自然
+- ✅ **商业应用** - 企业宣传、产品展示、课程推广必备
+
+```python
+# 首尾帧生成示例
+video = sdk.generate_from_first_last_frames(
+    first_frame_path="logo.png",      # 首帧：公司 Logo
+    last_frame_path="qrcode.png",     # 尾帧：二维码
+    prompt="科技感粒子特效过渡",
+    duration=10                        # 10 秒流畅过渡
+)
+```
+
+### 🎭 角色一致性
+
+**解决 AI 视频最大痛点** - 人物/场景不一致：
+
+- ✅ **角色锁定** - 固定人物描述模板
+- ✅ **参考图功能** - 使用参考图保持一致性
+- ✅ **多帧融合** - 最多 4 张参考图融合
+- ✅ **专业术语** - 支持舞蹈、运动等专业动作描述
+
+### ️ 12 秒长视频
+
+**突破 5 秒限制**，充分利用 API 能力：
+
+- ✅ **4-12 秒支持** - 单段视频最长 12 秒
+- ✅ **成本优化** - 同样价格，时长翻倍
+- ✅ **多段拼接** - 可拼接多个片段获得更长视频
+
+---
+
+## 🚀 快速开始
+
+### 安装
+
+```bash
+# 克隆项目
+git clone https://github.com/jcs130/ai-video-consistent.git
+cd ai-video-consistent
+
+# 安装依赖
+pip install requests pillow aiohttp
+```
+
+### 配置 API Key
+
+```bash
+# 获取火山引擎 API Key
+# https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey
+
+export VOLC_API_KEY="your-api-key-here"
+```
+
+### 基础使用
+
+```python
+from volc_video_sdk import VolcVideoSDK
+
+# 初始化
+sdk = VolcVideoSDK(api_key="your-api-key")
+
+# 文生视频
+video = sdk.generate(
+    prompt="一只小猫在草地上奔跑，阳光明媚",
+    duration=5
+)
+print(f"视频 URL: {video['video_url']}")
+
+# 首帧生视频
+video = sdk.generate_from_first_frame(
+    first_frame_path="cat.jpg",
+    prompt="小猫开始奔跑，镜头跟随",
+    duration=5
+)
+
+# 首尾帧生视频（核心功能！）
+video = sdk.generate_from_first_last_frames(
+    first_frame_path="logo.png",
+    last_frame_path="qrcode.png",
+    prompt="科技感粒子特效过渡，蓝色光效",
+    duration=10
+)
+```
+
+---
+
+## 💼 商业应用场景
+
+### 1. 企业宣传片
+
+```
+首帧：公司 Logo + 名称
+中间：AI 生成产品展示/团队风采
+尾帧：联系方式 + 二维码
+价格：500-2000 元/条
+```
+
+### 2. 产品广告
+
+```
+首帧：产品特写
+中间：使用场景展示
+尾帧：购买链接 + 优惠信息
+价格：300-1000 元/条
+```
+
+### 3. 课程推广
+
+```
+首帧：讲师照片 + 课程标题
+中间：课程内容亮点
+尾帧：报名二维码 + 限时优惠
+价格：200-800 元/条
+```
+
+### 4. 活动预告
+
+```
+首帧：活动主题海报
+中间：活动亮点/嘉宾介绍
+尾帧：时间地点 + 报名入口
+价格：200-500 元/条
+```
+
+---
+
+## 📊 技术对比
+
+| 功能 | 普通 AI 视频 | 本工具 |
+|------|------------|--------|
+| **首帧控制** | ❌ 不支持 | ✅ 精确控制 |
+| **尾帧控制** | ❌ 不支持 | ✅ 精确控制 |
+| **中间过渡** | ❌ 硬切/跳跃 | ✅ AI 流畅插值 |
+| **角色一致性** | ⚠️ 容易变形 | ✅ 参考图锁定 |
+| **视频时长** | 5 秒 | 4-12 秒 |
+| **商业价值** | 入门级 | 专业级 |
+
+---
+
+## 📁 项目结构
+
+```
+ai-video-consistent/
+├── volc_video_sdk.py       # 核心 SDK
+├── SKILL.md                # 完整文档
+├── README.md               # 使用说明
+├── LICENSE                 # MIT 许可证
+├── examples/
+│   ├── basic_usage.py      # 基础示例
+│   ├── consistent_video.py # 一致性视频示例
+│   └── first_last_frames.py # 首尾帧示例
+└── docs/
+    ├── API_REFERENCE.md    # API 参考
+    └── BEST_PRACTICES.md   # 最佳实践
+```
+
+---
+
+## 🔧 API 参数说明
+
+### generate_from_first_last_frames
+
+```python
+def generate_from_first_last_frames(
+    first_frame_path: str,    # 首帧图片路径
+    last_frame_path: str,     # 尾帧图片路径
+    prompt: str = "",         # 视频描述（可选）
+    model: str = "ep-20260227022253-b67vh",  # 模型 ID
+    watermark: bool = True,   # 是否添加水印
+    duration: int = 5         # 时长（5 或 10 秒）
+) -> dict
+```
+
+**返回值**:
+```python
+{
+    "task_id": "cgt-20260322123456-xxxxx",
+    "video_url": "https://...",
+    "status": "success",
+    "duration": 5,
+    "cost": 0.05  # 元
+}
+```
+
+---
+
+## 💰 计费说明
+
+**火山引擎 Seedance 1.5 Pro**:
+
+- 5 秒视频：~0.05 元/条
+- 10 秒视频：~0.10 元/条
+- 首尾帧功能：**免费**（包含在基础 API 中）
+
+**建议定价**:
+
+- 基础版（5 秒）：199 元/条（成本 0.05 元，利润率 99.97%）
+- 专业版（10 秒 + 首尾帧）：599 元/条（成本 0.10 元，利润率 99.98%）
+- 企业版（定制）：1999 元+/条
+
+---
+
+## 🎓 示例代码
+
+### 示例 1：企业宣传片
+
+```python
+from volc_video_sdk import VolcVideoSDK
+
+sdk = VolcVideoSDK(api_key="your-api-key")
+
+# 生成企业宣传片
+video = sdk.generate_from_first_last_frames(
+    first_frame_path="company_logo.png",
+    last_frame_path="contact_qrcode.png",
+    prompt="科技感蓝色粒子特效，光线流动，专业大气",
+    duration=10,
+    watermark=False
+)
+
+print(f"企业宣传片生成成功：{video['video_url']}")
+```
+
+### 示例 2：产品广告
+
+```python
+# 生成产品广告
+video = sdk.generate(
+    prompt="智能手机展示，360 度旋转，屏幕亮起显示功能界面",
+    duration=5,
+    watermark=False
+)
+```
+
+### 示例 3：多段拼接长视频
+
+```python
+# 生成 3 个片段
+video1 = sdk.generate(prompt="开场动画", duration=5)
+video2 = sdk.generate_from_first_last_frames(
+    first_frame="product.jpg",
+    last_frame="price.png",
+    prompt="产品展示过渡",
+    duration=10
+)
+video3 = sdk.generate(prompt="结束动画", duration=5)
+
+# 使用 FFmpeg 拼接
+# ffmpeg -i video1.mp4 -i video2.mp4 -i video3.mp4 -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0" output.mp4
+```
+
+---
+
+## 🤝 变现模式
+
+### 模式 1：代做视频服务
+
+- 闲鱼/淘宝开店
+- 知乎/B 站引流
+- 私域接单（微信）
+- **月收入**: 5000-50000 元
+
+### 模式 2：技术培训
+
+- 录制教程卖课
+- 知识付费社群
+- 1 对 1 咨询
+- **月收入**: 3000-30000 元
+
+### 模式 3：企业定制
+
+- 品牌宣传片
+- 产品广告视频
+- 活动预告视频
+- **单项目**: 5000-100000 元
+
+---
+
+## 📞 联系方式
+
+- **GitHub**: [@jcs130](https://github.com/jcs130)
+- **知乎**: [李众力](https://www.zhihu.com/people/li-zhong-li-66)
+- **微信**: jcs130
+- **邮箱**: jcs130@users.noreply.github.com
+
+**商务合作**: 欢迎联系定制开发、技术咨询、企业培训
+
+---
+
+## 📄 许可证
+
+MIT License - 详见 [LICENSE](LICENSE) 文件
+
+---
+
+## 🙏 致谢
+
+- **火山引擎** - 提供强大的视频生成 API
+- **CoPaw** - Agent 框架支持
+- **社区贡献者** - 感谢所有提 Issue 和 PR 的朋友
+
+---
+
+## ⭐ Star History
+
+如果这个项目对你有帮助，请给个 Star！🌟
+
+[![Star History Chart](https://api.star-history.com/svg?repos=jcs130/ai-video-consistent&type=Date)](https://star-history.com/#jcs130/ai-video-consistent&Date)
+
+---
+
+*最后更新：2026-03-22*
