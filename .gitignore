@@ -39,11 +39,14 @@ Thumbs.db
 *.env
 !examples/.env.example
 
-# Generated videos
+# Generated videos (except examples)
 *.mp4
 *.mov
 *.avi
 long_videos/
+!examples/**/*.mp4
+!examples/**/*.mov
+!examples/**/*.avi
 
 # Test files
 test_*.py
