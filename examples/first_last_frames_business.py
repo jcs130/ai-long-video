@@ -13,7 +13,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from volc_video_sdk import VolcVideoSDK
 
-API_KEY = os.getenv("VOLC_API_KEY", "8d27bf88-53b0-4656-9946-f21934f4f24b")
+# 使用前请设置：export VOLC_API_KEY="your-api-key-here"
+API_KEY = os.getenv("VOLC_API_KEY")
+if not API_KEY:
+    raise ValueError("请设置 VOLC_API_KEY 环境变量")
 
 def create_company_promo():
     """

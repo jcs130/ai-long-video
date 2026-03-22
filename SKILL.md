@@ -35,12 +35,17 @@ license: Proprietary. Use according to Volcengine terms
 ## 认证信息
 
 ### 图片/视频生成
-- **API Key**: `8d27bf88-53b0-4656-9946-f21934f4f24b`
+- **API Key**: 从环境变量 `VOLC_API_KEY` 读取
 - **Base URL**: `https://ark.cn-beijing.volces.com/api/v3`
 
 ### 用户端点
 - **Seedream-5.0-lite**: `ep-20260227121917-j9vll` (图片生成)
 - **seedance1.5pro**: `ep-20260227022253-b67vh` (视频生成)
+
+**注意**: 使用前请设置环境变量：
+```bash
+export VOLC_API_KEY="your-api-key-here"
+```
 
 ## 使用方式
 
@@ -60,7 +65,8 @@ character = """
 """
 
 # ========== 步骤 2: 生成参考图 ==========
-img = VolcImage(api_key="8d27bf88-53b0-4656-9946-f21934f4f24b")
+# 使用前请设置：export VOLC_API_KEY="your-api-key-here"
+img = VolcImage()  # API Key 从环境变量读取
 
 result = img.generate(
     prompt=f"{character}，起始姿势：双脚呈芭蕾舞一位脚站立",
@@ -89,7 +95,7 @@ for i, action in enumerate(actions):
     download_image(result['urls'][0], f"frame_{i:02d}.jpg")
 
 # ========== 步骤 4: 生成 12 秒视频 ==========
-vid = VolcVideo(api_key="8d27bf88-53b0-4656-9946-f21934f4f24b")
+vid = VolcVideo()  # API Key 从环境变量读取
 
 task_id = vid.create_task_with_first_last_frames(
     first_frame_path="frame_01.jpg",
