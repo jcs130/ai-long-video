@@ -14,6 +14,7 @@
 4. [TTS 配音相关](#tts-配音相关)
 5. [视频拼接相关](#视频拼接相关)
 6. [文件管理相关](#文件管理相关)
+7. [音频处理相关](#音频处理相关)
 
 ---
 
@@ -282,29 +283,92 @@ payload = {
 
 ### 坑 9：TTS WebSocket 连接问题
 
-**问题**: WebSocket 连接需要正确的 header 和帧格式
+**问题**: WebSocket 连接需要正确的 header 和帧格式，websockets 库版本兼容性问题
 
-**解决方案**: 使用 HTTP SSE 端点更简单
+**现象**:
+```
+BaseEventLoop.create_connection() got an unexpected keyword argument 'extra_headers'
+```
+
+**解决方案 A**: 使用微软 Edge TTS（推荐⭐）
+
+```bash
+# 安装
+pip install edge-tts --break-system-packages
+
+# 生成配音
+edge-tts --text "你的文案" --voice zh-CN-XiaoxiaoNeural --write-media narration.mp3
+```
+
+**优势**:
+- ✅ 免费
+- ✅ 高质量（微软 Azure 语音）
+- ✅ 简单易用
+- ✅ 无需认证
+
+**常用音色**:
+- `zh-CN-XiaoxiaoNeural` - 甜美女声（最常用）
+- `zh-CN-YunxiNeural` - 成熟男声
+- `zh-CN-XiaoyiNeural` - 活泼女声
+
+**解决方案 B**: 使用火山引擎 HTTP SSE 端点
 
 ```python
-# 使用 SSE 端点
 url = "https://openspeech.bytedance.com/api/v3/tts/unidirectional/sse"
 params = {
     "access_token": ACCESS_TOKEN,
     "app_id": APP_ID,
-    "resource_id": RESOURCE_ID,
+    "resource_id": "seed-tts-1.0",
     "voice_type": "zh_female_uranus_bigtts",
     "text": text
 }
 ```
 
-**教训**: 优先使用 HTTP 端点，WebSocket 太复杂
+**教训**: 优先使用 Edge TTS，简单可靠
+
+---
+
+### 坑 10：视频自带 BGM，需要替换为人声
+
+**问题**: 生成的视频已有背景音乐，需要去掉并替换为 TTS 配音
+
+**解决方案**: 使用 FFmpeg 替换音频轨道
+
+```bash
+# 1. 生成 TTS 配音
+edge-tts --text "文案" --voice zh-CN-XiaoxiaoNeural --write-media narration.mp3
+
+# 2. 替换视频音频（去掉原 BGM，添加人声）
+ffmpeg -i video.mp4 -i narration.mp3 \
+  -c:v copy -c:a aac \
+  -map 0:v:0 -map 1:a:0 \
+  -shortest \
+  video_with_narration.mp4
+```
+
+**参数说明**:
+- `-c:v copy`: 视频流直接复制（不重新编码）
+- `-c:a aac`: 音频重新编码为 AAC
+- `-map 0:v:0`: 使用第一个文件的视频
+- `-map 1:a:0`: 使用第二个文件的音频
+- `-shortest`: 以较短的流为准（避免音画不同步）
+
+**如需保留 BGM + 添加人声**:
+```bash
+# 混合原音频和 TTS（调整音量比例）
+ffmpeg -i video.mp4 -i narration.mp3 \
+  -filter_complex "[0:a]volume=0.3[a];[a][1:a]amix=inputs=2:duration=first" \
+  -c:v copy -c:a aac \
+  video_mixed.mp4
+```
+
+**教训**: 先用 FFmpeg 检查视频是否有音频轨道，再决定处理方式
 
 ---
 
 ## 视频拼接相关
 
-### 坑 10：FFmpeg 拼接需要文件列表
+### 坑 11：FFmpeg 拼接需要文件列表
 
 **问题**: 直接拼接多个视频文件会报错
 
@@ -331,7 +395,7 @@ ffmpeg -f concat -safe 0 -i concat_list.txt -c copy output.mp4
 
 ---
 
-### 坑 11：视频时间戳问题
+### 坑 12：视频时间戳问题
 
 **问题**: 拼接时出现 `Non-monotonic DTS` 警告
 
@@ -356,7 +420,7 @@ ffmpeg -f concat -safe 0 -i list.txt -c:v libx264 -c:a aac output.mp4
 
 ## 文件管理相关
 
-### 坑 12：文件路径混乱
+### 坑 13：文件路径混乱
 
 **问题**: 项目文件散落在不同目录
 
@@ -376,7 +440,7 @@ project_001/
 
 ---
 
-### 坑 13：未保存任务 ID
+### 坑 14：未保存任务 ID
 
 **问题**: 生成过程中断后无法恢复
 
@@ -399,7 +463,36 @@ for scene in scenes:
 
 ---
 
-##  最佳实践总结
+## 音频处理相关
+
+### 坑 15：视频自带 BGM 需要处理
+
+**问题**: 火山引擎生成的视频自带背景音乐，需要决定是否保留
+
+**解决方案**:
+
+**方案 A: 完全替换为人声**（适合知识分享类）
+```bash
+ffmpeg -i video.mp4 -i narration.mp3 \
+  -c:v copy -c:a aac \
+  -map 0:v:0 -map 1:a:0 \
+  -shortest \
+  output.mp4
+```
+
+**方案 B: 混合 BGM+ 人声**（保留氛围）
+```bash
+ffmpeg -i video.mp4 -i narration.mp3 \
+  -filter_complex "[0:a]volume=0.3[a];[a][1:a]amix=inputs=2" \
+  -c:v copy -c:a aac \
+  output.mp4
+```
+
+**教训**: 先检查视频是否有音频轨道，根据视频类型决定处理方式
+
+---
+
+### 最佳实践总结
 
 ### 1. API 调用
 
