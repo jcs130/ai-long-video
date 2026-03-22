@@ -43,7 +43,7 @@ Thumbs.db
 *.mp4
 *.mov
 *.avi
-generated_videos/
+long_videos/
 
 # Test files
 test_*.py

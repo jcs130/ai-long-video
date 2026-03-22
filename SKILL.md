@@ -1,10 +1,10 @@
 ---
-name: volc_consistent_video
-description: 火山引擎一致性视频生成技能 - 使用角色锁定、参考图和专业术语生成高质量连续动作视频，支持最长 12 秒视频
+name: ai_long_video
+description: AI Long Video Generator - First-last frame control, character consistency, 12s video generation
 license: Proprietary. Use according to Volcengine terms
 ---
 
-# 火山引擎一致性视频生成技能
+# AI Long Video Generator Skill
 
 ## 概述
 
