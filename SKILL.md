@@ -1,10 +1,43 @@
 ---
 name: ai_long_video
 description: AI Long Video Generator - First-last frame control, infinite duration, character consistency
-license: Proprietary. Use according to Volcengine terms
+license: MIT
 ---
 
 # AI Long Video Generator Skill
+
+## 安装
+
+### 方法 1: 从 GitHub 克隆（推荐）
+
+```bash
+cd /home/jcs130/.copaw/active_skills
+git clone https://github.com/jcs130/ai-long-video.git ai_long_video
+```
+
+### 方法 2: 手动下载
+
+1. 访问 https://github.com/jcs130/ai-long-video
+2. 点击 "Code" → "Download ZIP"
+3. 解压到 `/home/jcs130/.copaw/active_skills/ai_long_video`
+
+### 安装依赖
+
+```bash
+# 基础依赖（必需）
+pip install volcenginesdkarkruntime requests --break-system-packages
+
+# 高级功能（可选，支持自我进化反馈收集）
+pip install tenacity --break-system-packages
+# 或者安装完整的 skill_evolution_manager
+```
+
+### 配置 API Key
+
+```bash
+export VOLC_API_KEY="your-api-key-here"
+# 或者在代码中传入：VolcVideo(api_key="your-key")
+```
 
 ## 概述
 

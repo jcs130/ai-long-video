@@ -10,9 +10,31 @@ import logging
 from typing import Optional, Dict, Any, List
 from volcenginesdkarkruntime import Ark
 
-# 自我进化集成 - 自动反馈收集 + 重试机制
-from skill_evolution_manager.auto_feedback import auto_feedback
-from tenacity import retry, stop_after_attempt, wait_exponential
+# 自我进化集成 - 自动反馈收集 + 重试机制（可选依赖）
+try:
+    from skill_evolution_manager.auto_feedback import auto_feedback
+    from tenacity import retry, stop_after_attempt, wait_exponential
+    HAS_EVOLUTION = True
+except ImportError:
+    HAS_EVOLUTION = False
+    # 如果没有安装 skill_evolution_manager，使用空装饰器
+    def auto_feedback(*args, **kwargs):
+        """空装饰器，当 skill_evolution_manager 未安装时"""
+        def decorator(func):
+            return func
+        return decorator
+    
+    def retry(**kwargs):
+        """空装饰器，当 tenacity 未安装时"""
+        def decorator(func):
+            return func
+        return decorator
+    
+    def stop_after_attempt(n):
+        return n
+    
+    def wait_exponential(**kwargs):
+        return 0
 
 
 class VolcVideo:
