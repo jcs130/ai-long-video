@@ -1,6 +1,6 @@
 # 🎬 AI Long Video Generator
 
-> **First-Last Frame Control + Character Consistency + 12s Long Video** - Commercial-Grade AI Video Generation Tool
+> **First-Last Frame Control + Infinite Duration + Character Consistency** - Open Source AI Video Generation Tool
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
@@ -17,7 +17,7 @@
 - ✅ **首帧控制** - 指定视频开头画面（Logo/产品/人物）
 - ✅ **尾帧控制** - 指定视频结尾画面（二维码/联系方式/CTA）
 - ✅ **流畅过渡** - AI 自动生成中间帧，过渡自然
-- ✅ **商业应用** - 企业宣传、产品展示、课程推广必备
+- ✅ **无缝拼接** - 多个片段首尾衔接，生成超长视频
 
 ```python
 # 首尾帧生成示例
@@ -28,6 +28,44 @@ video = sdk.generate_from_first_last_frames(
     duration=10                        # 10 秒流畅过渡
 )
 ```
+
+### ♾️ 无限时长视频
+
+**理论支持任意时长** - 通过首尾帧拼接实现：
+
+- ✅ **单段时长**: 4-12 秒（火山引擎限制）
+- ✅ **拼接方式**: 上一段尾帧 = 下一段首帧
+- ✅ **无缝衔接**: AI 自动过渡，无硬切痕迹
+- ✅ **无限延长**: 1 分钟、5 分钟、10 分钟... 理论上无限制
+
+```python
+# 生成 60 秒视频示例（5 段 × 12 秒）
+frames = []
+for i in range(6):
+    # 生成关键帧
+    frame = sdk.generate_frame(f"场景{i}，渐进变化")
+    frames.append(frame)
+
+# 拼接成完整视频
+videos = []
+for i in range(len(frames) - 1):
+    video = sdk.generate_from_first_last_frames(
+        first_frame_path=frames[i],
+        last_frame_path=frames[i+1],
+        prompt="流畅过渡",
+        duration=12  # 每段 12 秒
+    )
+    videos.append(video)
+
+# 合并所有片段（使用 FFmpeg）
+# 总时长：5 段 × 12 秒 = 60 秒
+```
+
+**实际应用案例**:
+- 📺 **微电影**: 3-5 分钟（15-25 段拼接）
+- 🎓 **教学视频**: 10-30 分钟（50-150 段拼接）
+- 🎬 **宣传片**: 1-3 分钟（5-15 段拼接）
+- 📖 **有声书配图**: 任意时长（按章节拼接）
 
 ### 🎭 角色一致性
 
@@ -135,8 +173,10 @@ video = sdk.generate_from_first_last_frames(
 | **尾帧控制** | ❌ 不支持 | ✅ 精确控制 |
 | **中间过渡** | ❌ 硬切/跳跃 | ✅ AI 流畅插值 |
 | **角色一致性** | ⚠️ 容易变形 | ✅ 参考图锁定 |
-| **视频时长** | 5 秒 | 4-12 秒 |
-| **商业价值** | 入门级 | 专业级 |
+| **单段时长** | 5 秒 | 4-12 秒 |
+| **总时长** | 5 秒 | ♾️ 无限（通过拼接） |
+| **无缝拼接** | ❌ 不支持 | ✅ 首尾帧衔接 |
+| **适用场景** | 短视频 | 微电影/教学/宣传片 |
 
 ---
 

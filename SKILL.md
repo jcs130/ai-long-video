@@ -1,6 +1,6 @@
 ---
 name: ai_long_video
-description: AI Long Video Generator - First-last frame control, character consistency, 12s video generation
+description: AI Long Video Generator - First-last frame control, infinite duration, character consistency
 license: Proprietary. Use according to Volcengine terms
 ---
 
@@ -8,7 +8,7 @@ license: Proprietary. Use according to Volcengine terms
 
 ## 概述
 
-本技能专门用于生成**人物一致性高、动作专业流畅**的连续视频。通过角色锁定、参考图功能和 12 秒长视频支持，解决传统 AI 视频生成中人物不一致、动作奇怪、视频太短的三大问题。
+本技能专门用于生成**人物一致性高、动作专业流畅**的连续视频。通过角色锁定、参考图功能、首尾帧控制和无限时长拼接，解决传统 AI 视频生成中人物不一致、动作奇怪、视频太短的三大问题。
 
 ## 核心能力
 
@@ -22,15 +22,21 @@ license: Proprietary. Use according to Volcengine terms
 - 支持 `character`/`subject`/`style`/`scene` 四种参考类型
 - 最多支持 4 张参考图融合
 
-### 3. 专业动作描述
+### 3. 首尾帧控制 (First-Last Frame Control)
+- 精确控制视频的开头和结尾画面
+- AI 自动生成中间流畅过渡
+- 支持 Logo→二维码、产品→场景等商业应用
+
+### 4. 无限时长 (Infinite Duration) ⭐
+- **单段时长**: 4-12 秒
+- **拼接原理**: 上一段尾帧 = 下一段首帧
+- **理论时长**: 无限（通过多段拼接）
+- **实际应用**: 微电影（3-5 分钟）、教学视频（10-30 分钟）、宣传片（1-3 分钟）
+
+### 5. 专业动作描述
 - 使用领域专业术语（如芭蕾的 arabesque, pirouette）
 - 详细分解动作步骤
 - 包含镜头语言和灯光描述
-
-### 4. 12 秒长视频
-- 支持 **4-12 秒** 视频生成（之前仅用 5 秒，浪费 60%！）
-- 单段视频最长 12 秒
-- 可拼接多个片段获得更长视频
 
 ## 认证信息
 
