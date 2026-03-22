@@ -1,10 +1,62 @@
 # 🎬 AI Long Video Generator
 
-> **First-Last Frame Control + Infinite Duration + Character Consistency** - Open Source AI Video Generation Tool
+> **首尾帧控制 + 无限时长 + 角色一致性** - 开源 AI 视频生成工具
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![Volcengine](https://img.shields.io/badge/Powered%20by-Volcengine-orange)](https://www.volcengine.com/)
+[![Status](https://img.shields.io/badge/status-production%20ready-green)](https://github.com/jcs130/ai-long-video)
+
+**生产环境已验证** - 基于项目 001（AI 做视频介绍视频）完整测试通过
+
+---
+
+## 🚀 快速开始
+
+### 1. 安装
+
+```bash
+cd /home/jcs130/.copaw/active_skills
+git clone https://github.com/jcs130/ai-long-video.git ai_long_video
+cd ai_long_video
+pip install volcenginesdkarkruntime requests --break-system-packages
+```
+
+### 2. 配置 API Key
+
+```bash
+export ARK_API_KEY="your-api-key-here"
+```
+
+### 3. 使用示例
+
+```python
+from volc_video_sdk import VolcVideo
+
+video = VolcVideo(api_key="your-api-key")
+
+# 首尾帧生成视频
+task_id = video.create_task_with_first_last_frames(
+    first_frame_path="frame1.jpeg",
+    last_frame_path="frame2.jpeg",
+    prompt="人物从微笑到挥手，自然过渡",
+    duration=5,
+    watermark=False
+)
+```
+
+---
+
+## 📚 重要文档
+
+| 文档 | 说明 |
+|------|------|
+| [SKILL.md](SKILL.md) | 技能使用说明 |
+| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | ⭐ **踩坑指南** - 必读！ |
+| [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) | 维护指南 |
+| [SECURITY_CHECK.md](SECURITY_CHECK.md) | 安全检查报告 |
+
+**强烈建议先阅读 [TROUBLESHOOTING.md](TROUBLESHOOTING.md)**，避免重复踩坑！
 
 ---
 

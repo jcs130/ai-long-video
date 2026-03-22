@@ -88,6 +88,47 @@ export VOLC_API_KEY="your-api-key-here"
 
 ## 使用方式
 
+### ⚠️ 重要提示（踩坑经验）
+
+**1. 必须使用用户端点 ID**
+```python
+# ❌ 错误：使用公共模型 ID 会 404
+model="doubao-seedance-1-5-pro-250528"
+
+# ✅ 正确：使用用户端点 ID
+model="ep-20260227022253-b67vh"
+```
+
+**2. 首尾帧格式必须正确**
+```python
+# ❌ 错误：image_url 是字符串
+{"type": "image_url", "image_url": "data:image...", "role": "first_frame"}
+
+# ✅ 正确：image_url 是嵌套对象
+{
+    "type": "image_url",
+    "image_url": {"url": "data:image;base64,..."},
+    "role": "first_frame"
+}
+```
+
+**3. 图片生成后立即下载**
+- URL 有效期仅 24 小时
+- 生成后立即下载到本地保存
+
+**4. 视频生成需要轮询**
+- 生成时间：1-3 分钟
+- 每 10 秒检查一次状态
+- 成功后立即下载视频
+
+**5. 认证方式区分**
+- 视频/图片：`ARK_API_KEY`
+- TTS: `APP_ID` + `ACCESS_TOKEN` + `RESOURCE_ID`
+
+详细踩坑记录见：[TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+
+---
+
 ### Python SDK 调用
 
 ```python
