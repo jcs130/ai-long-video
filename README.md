@@ -4,10 +4,90 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![Volcengine](https://img.shields.io/badge/Powered%20by-Volcengine-orange)](https://www.volcengine.com/)
-[![Status](https://img.shields.io/badge/status-production%20ready-green)](https://github.com/jcs130/ai-long-video)
+[![Volcengine](https://img.shields.io/badge/Volcengine-Seedance-green.svg)](https://www.volcengine.com/)
+[![Status](https://img.shields.io/badge/status-production%20ready-success.svg)](https://github.com/jcs130/ai-long-video)
 
-**生产环境已验证** - 基于项目 001（AI 做视频介绍视频）完整测试通过
+**生产环境已验证** - 基于 3 个完整项目测试通过
+
+---
+
+## 📺 示例项目
+
+| 项目 | 主题 | 时长 | 场景 | 成本 | 查看 |
+|------|------|------|------|------|------|
+| **Project 001** | AI 做视频介绍 | 25 秒 | 5 | 5 元 | [📁 示例](examples/project_001/) |
+| **Project 002** | 一拳超人 vs 鸣人战力分析 | 2 分 10 秒 | 10 | 20 元 | [📁 示例](examples/project_002/) |
+| **Project 003** | 木屋烧烤宣传片 | 55 秒 | 10 | 18 元 | [📁 示例](examples/project_003/) |
+
+### Project 001: AI 做视频介绍视频 ⭐
+
+**25 秒知识分享类短视频**
+
+- **脚本**：124 字，5 个场景
+- **关键帧**：6 张 (1920x1920)
+- **视频**：5 段 × 5 秒
+- **TTS**：火山引擎小何 2.0
+- **输出**：3 个版本 (26MB/3.3MB/6.4MB)
+
+```bash
+cd examples/project_001
+python3 generate_keyframes.py
+python3 generate_videos.py
+python3 generate_tts.py
+ffmpeg -i video_merged.mp4 -i narration.mp3 -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 video_final.mp4
+```
+
+**特点**：完整工作流演示，适合快速上手
+
+---
+
+### Project 002: 一拳超人 vs 鸣人战力分析 🥊
+
+**2 分 10 秒跨次元对决分析**
+
+- **脚本**：537 字，10 个场景
+- **关键帧**：20 张 (1920x1920)
+- **视频**：10 段 × 12 秒
+- **TTS**：288KB，36 秒配音
+- **输出**：15MB 完整版
+
+**踩坑记录**：
+- TTS API 格式必须用简化版 `{"user": {...}, "req_params": {...}}`
+- 角色描述要具体：包含角色名 + 作品名 + 外观特征
+- 阿里云盘 API 返回 201 也是成功
+
+```bash
+cd examples/project_002
+python3 generate_srt.py
+python3 generate_tts_correct.py
+ffmpeg -i video_merged.mp4 -vf "subtitles=subtitles.srt:force_style='...'" video_with_subs.mp4
+ffmpeg -i video_with_subs.mp4 -i narration.mp3 -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 video_final.mp4
+```
+
+**特点**：长视频制作，多 Agent 协作流程
+
+---
+
+### Project 003: 木屋烧烤宣传片 🍖
+
+**55 秒品牌形象片 - 雨夜海边兄弟情**
+
+- **脚本**：165 字，10 个场景，电影质感
+- **关键帧**：20 张 (1920x1920)
+- **视频**：10 段 (3-10 秒各不同)
+- **TTS**：288KB，小何 2.0 知性女声
+- **输出**：15MB 完整版
+
+**创意亮点**：
+- 雨夜海边场景，暖黄灯光 vs 深蓝雨夜对比
+- 兄弟情 + 奋斗回忆 + 人生感悟
+- 品牌定位：不只是烧烤店，是情感寄托的地方
+
+**经典台词**：
+> "日子啊，就是有人陪你吃肉，有人陪你扛事。"
+> "木屋烧烤——有些话，有些肉，只和懂你的人分享。"
+
+**特点**：商业宣传片案例，情感叙事
 
 ---
 
@@ -16,10 +96,9 @@
 ### 1. 安装
 
 ```bash
-cd /home/jcs130/.copaw/active_skills
-git clone https://github.com/jcs130/ai-long-video.git ai_long_video
-cd ai_long_video
-pip install volcenginesdkarkruntime requests --break-system-packages
+git clone https://github.com/jcs130/ai-long-video.git
+cd ai-long-video
+pip install volcenginesdkarkruntime requests
 ```
 
 ### 2. 配置 API Key
@@ -27,6 +106,8 @@ pip install volcenginesdkarkruntime requests --break-system-packages
 ```bash
 export ARK_API_KEY="your-api-key-here"
 ```
+
+获取 API Key: https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey
 
 ### 3. 使用示例
 
@@ -52,11 +133,11 @@ task_id = video.create_task_with_first_last_frames(
 | 文档 | 说明 |
 |------|------|
 | [SKILL.md](SKILL.md) | 技能使用说明 |
-| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | ⭐ **踩坑指南** - 必读！ |
+| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) ⭐ | **踩坑指南 - 必读！** |
 | [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) | 维护指南 |
 | [SECURITY_CHECK.md](SECURITY_CHECK.md) | 安全检查报告 |
 
-**强烈建议先阅读 [TROUBLESHOOTING.md](TROUBLESHOOTING.md)**，避免重复踩坑！
+**强烈建议先阅读 [TROUBLESHOOTING.md](TROUBLESHOOTING.md)，避免重复踩坑！**
 
 ---
 
@@ -77,9 +158,11 @@ video = sdk.generate_from_first_last_frames(
     first_frame_path="logo.png",      # 首帧：公司 Logo
     last_frame_path="qrcode.png",     # 尾帧：二维码
     prompt="科技感粒子特效过渡",
-    duration=10                        # 10 秒流畅过渡
+    duration=10                       # 10 秒流畅过渡
 )
 ```
+
+---
 
 ### ♾️ 无限时长视频
 
@@ -119,6 +202,8 @@ for i in range(len(frames) - 1):
 - 🎬 **宣传片**: 1-3 分钟（5-15 段拼接）
 - 📖 **有声书配图**: 任意时长（按章节拼接）
 
+---
+
 ### 🎭 角色一致性
 
 **解决 AI 视频最大痛点** - 人物/场景不一致：
@@ -128,68 +213,24 @@ for i in range(len(frames) - 1):
 - ✅ **多帧融合** - 最多 4 张参考图融合
 - ✅ **专业术语** - 支持舞蹈、运动等专业动作描述
 
-### ️ 12 秒长视频
+**角色一致性技巧**:
+
+| 问题 | 解决方案 |
+|------|----------|
+| 角色长得不像 | prompt 包含角色名 + 作品名 + 外观特征 |
+| 不同场景角色不一致 | 使用相同 seed 值 + 参考图 |
+| 剪影太抽象 | 用具体服装颜色 + 发型描述 |
+| AI 理解偏差 | 加英文角色名：Saitama (One-Punch Man) |
+
+---
+
+### ⏱️ 12 秒长视频
 
 **突破 5 秒限制**，充分利用 API 能力：
 
 - ✅ **4-12 秒支持** - 单段视频最长 12 秒
 - ✅ **时长优势** - 支持 4-12 秒视频（普通 AI 视频通常仅 5 秒）
 - ✅ **多段拼接** - 可拼接多个片段获得更长视频
-
----
-
-## 🚀 快速开始
-
-### 安装
-
-```bash
-# 克隆项目
-git clone https://github.com/jcs130/ai-video-consistent.git
-cd ai-video-consistent
-
-# 安装依赖
-pip install requests pillow aiohttp
-```
-
-### 配置 API Key
-
-```bash
-# 获取火山引擎 API Key
-# https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey
-
-export VOLC_API_KEY="your-api-key-here"
-```
-
-### 基础使用
-
-```python
-from volc_video_sdk import VolcVideoSDK
-
-# 初始化
-sdk = VolcVideoSDK(api_key="your-api-key")
-
-# 文生视频
-video = sdk.generate(
-    prompt="一只小猫在草地上奔跑，阳光明媚",
-    duration=5
-)
-print(f"视频 URL: {video['video_url']}")
-
-# 首帧生视频
-video = sdk.generate_from_first_frame(
-    first_frame_path="cat.jpg",
-    prompt="小猫开始奔跑，镜头跟随",
-    duration=5
-)
-
-# 首尾帧生视频（核心功能！）
-video = sdk.generate_from_first_last_frames(
-    first_frame_path="logo.png",
-    last_frame_path="qrcode.png",
-    prompt="科技感粒子特效过渡，蓝色光效",
-    duration=10
-)
-```
 
 ---
 
@@ -215,39 +256,25 @@ video = sdk.generate_from_first_last_frames(
 - 中间：活动亮点/嘉宾介绍
 - 尾帧：时间地点 + 报名入口
 
+### 知识分享短视频
+- 开场：痛点/问题/反差（3-5 秒）
+- 主体：解决方案/步骤/案例（20-40 秒）
+- 结尾：总结 + 行动号召（5-10 秒）
+
 ---
 
 ## 📊 技术对比
 
 | 功能 | 普通 AI 视频 | 本工具 |
-|------|------------|--------|
-| **首帧控制** | ❌ 不支持 | ✅ 精确控制 |
-| **尾帧控制** | ❌ 不支持 | ✅ 精确控制 |
-| **中间过渡** | ❌ 硬切/跳跃 | ✅ AI 流畅插值 |
-| **角色一致性** | ⚠️ 容易变形 | ✅ 参考图锁定 |
-| **单段时长** | 5 秒 | 4-12 秒 |
-| **总时长** | 5 秒 | ♾️ 无限（通过拼接） |
-| **无缝拼接** | ❌ 不支持 | ✅ 首尾帧衔接 |
-| **适用场景** | 短视频 | 微电影/教学/宣传片 |
-
----
-
-## 📁 项目结构
-
-```
-ai-video-consistent/
-├── volc_video_sdk.py       # 核心 SDK
-├── SKILL.md                # 完整文档
-├── README.md               # 使用说明
-├── LICENSE                 # MIT 许可证
-├── examples/
-│   ├── basic_usage.py      # 基础示例
-│   ├── consistent_video.py # 一致性视频示例
-│   └── first_last_frames.py # 首尾帧示例
-└── docs/
-    ├── API_REFERENCE.md    # API 参考
-    └── BEST_PRACTICES.md   # 最佳实践
-```
+|------|-------------|--------|
+| 首帧控制 | ❌ 不支持 | ✅ 精确控制 |
+| 尾帧控制 | ❌ 不支持 | ✅ 精确控制 |
+| 中间过渡 | ❌ 硬切/跳跃 | ✅ AI 流畅插值 |
+| 角色一致性 | ⚠️ 容易变形 | ✅ 参考图锁定 |
+| 单段时长 | 5 秒 | 4-12 秒 |
+| 总时长 | 5 秒 | ♾️ 无限（通过拼接） |
+| 无缝拼接 | ❌ 不支持 | ✅ 首尾帧衔接 |
+| 适用场景 | 短视频 | 微电影/教学/宣传片 |
 
 ---
 
@@ -262,7 +289,7 @@ def generate_from_first_last_frames(
     prompt: str = "",         # 视频描述（可选）
     model: str = "ep-20260227022253-b67vh",  # 模型 ID
     watermark: bool = True,   # 是否添加水印
-    duration: int = 5         # 时长（5 或 10 秒）
+    duration: int = 5         # 时长（4-12 秒）
 ) -> dict
 ```
 
@@ -282,11 +309,58 @@ def generate_from_first_last_frames(
 
 **火山引擎 Seedance 1.5 Pro**:
 
-- 5 秒视频：~0.05 元/条
-- 10 秒视频：~0.10 元/条
+- 图片生成：~0.15 元/张 (1920x1920)
+- 5 秒视频：~0.75 元/条
+- 10 秒视频：~1.5 元/条
+- 12 秒视频：~1.8 元/条
 - 首尾帧功能：**免费**（包含在基础 API 中）
 
-详细计费标准请参考：https://www.volcengine.com/docs/82379/1399008
+**TTS 配音**:
+- 新账号免费额度：2000 字/月
+- 超出后：~0.01 元/字
+
+**项目成本参考**:
+- Project 001 (25 秒): ~5 元
+- Project 002 (2 分 10 秒): ~20 元
+- Project 003 (55 秒): ~18 元
+
+详细计费标准：https://www.volcengine.com/docs/82379/1399008
+
+---
+
+## 📁 项目结构
+
+```
+ai-long-video/
+├── volc_video_sdk.py         # 核心 SDK
+├── volc_image_sdk.py         # 图片生成 SDK
+├── volc_tts_sdk.py           # TTS 配音 SDK
+├── SKILL.md                  # 完整文档
+├── README.md                 # 使用说明
+├── TROUBLESHOOTING.md        # 踩坑指南（20+ 条）
+├── MAINTENANCE_GUIDE.md      # 维护指南
+├── LICENSE                   # MIT 许可证
+├── requirements.txt          # Python 依赖
+└── examples/                 # 示例项目
+    ├── project_001/          # AI 做视频介绍（25 秒）
+    │   ├── README.md
+    │   ├── generate_keyframes.py
+    │   ├── generate_videos.py
+    │   ├── generate_tts.py
+    │   └── video_final.mp4
+    ├── project_002/          # 一拳超人 vs 鸣人（2 分 10 秒）
+    │   ├── README.md
+    │   ├── 脚本_一拳超人 vs 鸣人.md
+    │   ├── generate_srt.py
+    │   ├── generate_tts_correct.py
+    │   └── video_final.mp4
+    └── project_003/          # 木屋烧烤宣传片（55 秒）
+        ├── README.md
+        ├── 脚本_木屋烧烤.md
+        ├── generate_srt.py
+        ├── generate_tts.py
+        └── video_final.mp4
+```
 
 ---
 
@@ -311,18 +385,7 @@ video = sdk.generate_from_first_last_frames(
 print(f"企业宣传片生成成功：{video['video_url']}")
 ```
 
-### 示例 2：产品广告
-
-```python
-# 生成产品广告
-video = sdk.generate(
-    prompt="智能手机展示，360 度旋转，屏幕亮起显示功能界面",
-    duration=5,
-    watermark=False
-)
-```
-
-### 示例 3：多段拼接长视频
+### 示例 2：多段拼接长视频
 
 ```python
 # 生成 3 个片段
@@ -336,7 +399,8 @@ video2 = sdk.generate_from_first_last_frames(
 video3 = sdk.generate(prompt="结束动画", duration=5)
 
 # 使用 FFmpeg 拼接
-# ffmpeg -i video1.mp4 -i video2.mp4 -i video3.mp4 -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0" output.mp4
+# ffmpeg -i video1.mp4 -i video2.mp4 -i video3.mp4 \
+#   -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0" output.mp4
 ```
 
 ---
@@ -358,7 +422,7 @@ result = video.generate_from_first_last_frames(
 )
 ```
 
-详细 Skill 文档请参考：[SKILL.md](SKILL.md)
+详细 Skill 文档：[SKILL.md](SKILL.md)
 
 ---
 
@@ -386,8 +450,8 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 如果这个项目对你有帮助，请给个 Star！🌟
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jcs130/ai-video-consistent&type=Date)](https://star-history.com/#jcs130/ai-video-consistent&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=jcs130/ai-long-video&type=Date)](https://star-history.com/#jcs130/ai-long-video&Date)
 
 ---
 
-*最后更新：2026-03-22*
+*最后更新：2026-03-28*
