@@ -36,8 +36,8 @@
 ### 代码脚本
 | 文件 | 功能 | 位置 |
 |------|------|------|
-| `complete_workflow.py` | 完整自动化工作流（6 步） | `media/project_003/` |
-| `generate_srt_aligned.py` | 自动生成对齐 SRT | `media/project_003/` |
+| `complete_workflow.py` | 完整自动化工作流（6 步） | `examples/project_003_v2/` |
+| `generate_srt_aligned.py` | 自动生成对齐 SRT | `examples/project_003_v2/` |
 | `generate_tts_v2.py` | 多角色配音生成 | `media/project_003/` |
 | `generate_keyframes_v2.py` | 一致性关键帧生成 | `media/project_003/` |
 | `generate_videos_v2.py` | 首尾帧视频生成 | `media/project_003/` |
@@ -46,7 +46,7 @@
 | 文件 | 说明 | 位置 |
 |------|------|------|
 | `角色设计.md` | 视觉 + 声音双一致设计 | `media/project_003/` |
-| `README_V2.md` | Project 003 V2 完整文档 | `media/project_003/` |
+| `README_V2.md` | Project 003 V2 完整文档 | `examples/project_003_v2/` |
 | `subtitles_v2_aligned.srt` | 对齐字幕（27 秒） | `media/project_003/` |
 
 ### 媒体文件

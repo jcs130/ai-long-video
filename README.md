@@ -49,10 +49,12 @@
 ### 1. 安装
 
 ```bash
-cd /home/jcs130/.copaw/active_skills
+# 克隆项目到你的工作目录
 git clone https://github.com/jcs130/ai-long-video.git ai_long_video
 cd ai_long_video
-pip install volcenginesdkarkruntime requests --break-system-packages
+
+# 安装依赖
+pip install volcenginesdkarkruntime requests
 ```
 
 ### 2. 配置 API Key
