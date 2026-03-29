@@ -7,6 +7,8 @@
 [![Volcengine](https://img.shields.io/badge/Powered%20by-Volcengine-orange)](https://www.volcengine.com/)
 [![Status](https://img.shields.io/badge/status-production%20ready-green)](https://github.com/jcs130/ai-long-video)
 
+**Language**: **🇬🇧 English** | [🇨🇳 中文](README_zh.md)
+
 **Production Ready** - Tested with 3 complete projects (001/002/003)
 
 ---
