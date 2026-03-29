@@ -1,80 +1,101 @@
 # 🎬 AI Long Video Generator
 
-> **首尾帧控制 + 无限时长 + 角色一致性** - 开源 AI 视频生成工具
+> **First-Last Frame Control + Unlimited Duration + Character Consistency** - Open Source AI Video Generation Tool
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![Volcengine](https://img.shields.io/badge/Powered%20by-Volcengine-orange)](https://www.volcengine.com/)
 [![Status](https://img.shields.io/badge/status-production%20ready-green)](https://github.com/jcs130/ai-long-video)
 
-**生产环境已验证** - 基于项目 001/002/003 完整测试通过
+**Production Ready** - Tested with 3 complete projects (001/002/003)
 
 ---
 
-## 🎯 项目案例
+## 🎯 Project Showcase
 
-### Project 001: AI 做视频介绍视频（25 秒）
-- **内容**：介绍 AI 视频生成工具
-- **时长**：25.22 秒
-- **场景**：5 个镜头
-- **成本**：约 5 元
-- **特点**：首个完整案例，验证工作流
+### Project 001: AI Video Introduction (25 seconds)
+- **Content**: Introduction to AI video generation tool
+- **Duration**: 25.22 seconds
+- **Scenes**: 5 shots
+- **Cost**: ~¥5 CNY
+- **Features**: First complete case, workflow validation
 
-### Project 002: 一拳超人 vs 鸣人（2 分 10 秒）
-- **内容**：动漫角色对战分析
-- **时长**：130 秒
-- **场景**：10 个镜头
-- **成本**：约 20 元
-- **特点**：长视频测试，角色一致性验证
+### Project 002: One Punch Man vs Naruto (2 min 10 sec)
+- **Content**: Anime character battle analysis
+- **Duration**: 130 seconds
+- **Scenes**: 10 shots
+- **Cost**: ~¥20 CNY
+- **Features**: Long video test, character consistency validation
 
-### Project 003: 木屋烧烤宣传片（38 秒）✅ 最新
-- **内容**：中年男性友情故事
-- **时长**：38 秒
-- **场景**：10 个镜头
-- **成本**：约 18 元
-- **特点**：
-  - ✅ 角色设计文档（老张/老李）
-  - ✅ 关键帧一致性（20 张图）
-  - ✅ 多角色配音（旁白 + 老张 + 老李）
-  - ✅ 音画同步（视频裁剪匹配配音）
-  - ✅ 硬字幕嵌入
-- **教训**：
-  - ⚠️ 视频时长充分利用（支持 4-12 秒，不要固定 5 秒）
-  - ⚠️ 先角色设计再生成关键帧（避免长相不一致）
+### Project 003: Muwu BBQ Promotional Video (38 seconds) ✅ Latest
+- **Content**: Middle-aged men's friendship story
+- **Duration**: 38 seconds
+- **Scenes**: 10 shots
+- **Cost**: ~¥18 CNY
+- **Features**:
+  - ✅ Character design document (Lao Zhang / Lao Li)
+  - ✅ Keyframe consistency (20 images)
+  - ✅ Multi-role voiceover (Narrator + Lao Zhang + Lao Li)
+  - ✅ Audio-video sync (video clipped to match audio)
+  - ✅ Hard subtitle embedding
+- **Lessons**:
+  - ⚠️ Fully utilize video duration (supports 4-12s, don't fix at 5s)
+  - ⚠️ Design characters before generating keyframes (avoid inconsistent appearance)
 
 ---
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 1. 安装
+### 1. Installation
 
 ```bash
-# 克隆项目到你的工作目录
-git clone https://github.com/jcs130/ai-long-video.git ai_long_video
-cd ai_long_video
+# Clone the repository
+git clone https://github.com/jcs130/ai-long-video.git
+cd ai-long-video
 
-# 安装依赖
-pip install volcenginesdkarkruntime requests
+# Install dependencies
+pip install volcenginesdkarkruntime requests pillow
 ```
 
-### 2. 配置 API Key
+### 2. Get API Key
 
+**Step 1**: Visit Volcengine ARK Console  
+👉 https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey
+
+**Step 2**: Create or select your API Key
+- Click "Create API Key" if you don't have one
+- Copy the generated key (starts with UUID format)
+
+**Step 3**: Set environment variable
 ```bash
+# Linux/Mac
 export ARK_API_KEY="your-api-key-here"
+
+# Windows (PowerShell)
+$env:ARK_API_KEY="your-api-key-here"
+
+# Windows (CMD)
+set ARK_API_KEY=your-api-key-here
 ```
 
-### 3. 使用示例
+**Note**: 
+- Free tier available for testing
+- Pricing: ~¥0.05 CNY per 5-second video
+- See [official pricing](https://www.volcengine.com/docs/82379/1399008) for details
+
+### 3. Basic Usage
 
 ```python
 from volc_video_sdk import VolcVideo
 
+# Initialize with API key
 video = VolcVideo(api_key="your-api-key")
 
-# 首尾帧生成视频
+# Generate video with first-last frame control
 task_id = video.create_task_with_first_last_frames(
     first_frame_path="frame1.jpeg",
     last_frame_path="frame2.jpeg",
-    prompt="人物从微笑到挥手，自然过渡",
+    prompt="Person transitions from smile to wave, natural motion",
     duration=5,
     watermark=False
 )
@@ -82,226 +103,161 @@ task_id = video.create_task_with_first_last_frames(
 
 ---
 
-## 📚 重要文档
+## ✨ Core Features
 
-| 文档 | 说明 |
-|------|------|
-| [SKILL.md](SKILL.md) | 技能使用说明 |
-| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | ⭐ **踩坑指南** - 必读！ |
-| [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) | 维护指南 |
-| [SECURITY_CHECK.md](SECURITY_CHECK.md) | 安全检查报告 |
+### 🎯 First-Last Frame Precision Control
 
-**强烈建议先阅读 [TROUBLESHOOTING.md](TROUBLESHOOTING.md)**，避免重复踩坑！
+**Industry-leading first-last frame generation** with keyframe interpolation:
 
----
-
-## ✨ 核心特性
-
-### 🎯 首尾帧精确控制
-
-**业界领先的首尾帧生成功能**，支持关键帧插值：
-
-- ✅ **首帧控制** - 指定视频开头画面（Logo/产品/人物）
-- ✅ **尾帧控制** - 指定视频结尾画面（二维码/联系方式/CTA）
-- ✅ **流畅过渡** - AI 自动生成中间帧，过渡自然
-- ✅ **无缝拼接** - 多个片段首尾衔接，生成超长视频
+- ✅ **First Frame Control** - Specify video opening (logo/product/person)
+- ✅ **Last Frame Control** - Specify video ending (QR code/contact/CTA)
+- ✅ **Smooth Transition** - AI generates intermediate frames naturally
+- ✅ **Seamless Stitching** - Multiple segments connect without hard cuts
 
 ```python
-# 首尾帧生成示例
+# First-last frame generation example
 video = sdk.generate_from_first_last_frames(
-    first_frame_path="logo.png",      # 首帧：公司 Logo
-    last_frame_path="qrcode.png",     # 尾帧：二维码
-    prompt="科技感粒子特效过渡",
-    duration=10                        # 10 秒流畅过渡
+    first_frame_path="logo.png",      # First: Company logo
+    last_frame_path="qrcode.png",     # Last: QR code
+    prompt="Tech particle effects transition",
+    duration=10                        # 10 seconds smooth transition
 )
 ```
 
-### ♾️ 无限时长视频
+### ♾️ Unlimited Duration Video
 
-**理论支持任意时长** - 通过首尾帧拼接实现：
+**Theoretically supports any duration** - achieved through first-last frame chaining:
 
-- ✅ **单段时长**: 4-12 秒（火山引擎限制）
-- ✅ **拼接方式**: 上一段尾帧 = 下一段首帧
-- ✅ **无缝衔接**: AI 自动过渡，无硬切痕迹
-- ✅ **无限延长**: 1 分钟、5 分钟、10 分钟... 理论上无限制
+- ✅ **Single Segment**: 4-12 seconds (Volcengine limitation)
+- ✅ **Chaining Method**: Previous segment's last frame = Next segment's first frame
+- ✅ **Seamless Connection**: AI auto-transitions, no hard cut marks
+- ✅ **Unlimited Extension**: 1 min, 5 min, 10 min... theoretically unlimited
 
 ```python
-# 生成 60 秒视频示例（5 段 × 12 秒）
+# Generate 60-second video example (5 segments × 12 seconds)
 frames = []
 for i in range(6):
-    # 生成关键帧
-    frame = sdk.generate_frame(f"场景{i}，渐进变化")
+    # Generate keyframes
+    frame = sdk.generate_frame(f"Scene {i}, progressive change")
     frames.append(frame)
 
-# 拼接成完整视频
+# Chain into complete video
 videos = []
 for i in range(len(frames) - 1):
     video = sdk.generate_from_first_last_frames(
         first_frame_path=frames[i],
         last_frame_path=frames[i+1],
-        prompt="流畅过渡",
-        duration=12  # 每段 12 秒
+        prompt="Smooth transition",
+        duration=12  # 12 seconds per segment
     )
     videos.append(video)
 
-# 合并所有片段（使用 FFmpeg）
-# 总时长：5 段 × 12 秒 = 60 秒
+# Merge all segments (using FFmpeg)
+# Total duration: 5 segments × 12 seconds = 60 seconds
 ```
 
-**实际应用案例**:
-- 📺 **微电影**: 3-5 分钟（15-25 段拼接）
-- 🎓 **教学视频**: 10-30 分钟（50-150 段拼接）
-- 🎬 **宣传片**: 1-3 分钟（5-15 段拼接）
-- 📖 **有声书配图**: 任意时长（按章节拼接）
+**Real-world Applications**:
+- 📺 **Micro-films**: 3-5 minutes (15-25 segments chained)
+- 🎓 **Educational Videos**: 10-30 minutes (50-150 segments chained)
+- 🎬 **Promotional Videos**: 1-3 minutes (5-15 segments chained)
+- 📖 **Audiobook Illustrations**: Any duration (chained by chapters)
 
-### 🎭 角色一致性
+### 🎭 Character Consistency
 
-**解决 AI 视频最大痛点** - 人物/场景不一致：
+**Solving AI video's biggest pain point** - inconsistent characters/scenes:
 
-- ✅ **角色锁定** - 固定人物描述模板
-- ✅ **参考图功能** - 使用参考图保持一致性
-- ✅ **多帧融合** - 最多 4 张参考图融合
-- ✅ **专业术语** - 支持舞蹈、运动等专业动作描述
+- ✅ **Character Lock** - Fixed character description template
+- ✅ **Reference Image** - Use reference images for consistency
+- ✅ **Multi-frame Fusion** - Up to 4 reference images fused
+- ✅ **Professional Terminology** - Supports dance, sports, and other professional action descriptions
 
-### ️ 12 秒长视频
+### ⏱️ 12-Second Long Videos
 
-**突破 5 秒限制**，充分利用 API 能力：
+**Breaking the 5-second limit**, fully utilizing API capabilities:
 
-- ✅ **4-12 秒支持** - 单段视频最长 12 秒
-- ✅ **时长优势** - 支持 4-12 秒视频（普通 AI 视频通常仅 5 秒）
-- ✅ **多段拼接** - 可拼接多个片段获得更长视频
+- ✅ **4-12 Second Support** - Single video up to 12 seconds
+- ✅ **Duration Advantage** - Supports 4-12 seconds (most AI video tools only 5 seconds)
+- ✅ **Multi-segment Chaining** - Chain multiple segments for longer videos
 
 ---
 
-## 🚀 快速开始
+## 💼 Use Cases
 
-### 安装
+### Corporate Promotional Videos
+- First frame: Company logo + name
+- Middle: AI-generated product showcase / team highlights
+- Last frame: Contact info + QR code
 
-```bash
-# 克隆项目
-git clone https://github.com/jcs130/ai-video-consistent.git
-cd ai-video-consistent
+### Product Advertisements
+- First frame: Product close-up
+- Middle: Usage scenario demonstration
+- Last frame: Purchase link + discount info
 
-# 安装依赖
-pip install requests pillow aiohttp
-```
+### Course Promotion
+- First frame: Instructor photo + course title
+- Middle: Course content highlights
+- Last frame: Registration QR code
 
-### 配置 API Key
-
-```bash
-# 获取火山引擎 API Key
-# https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey
-
-export VOLC_API_KEY="your-api-key-here"
-```
-
-### 基础使用
-
-```python
-from volc_video_sdk import VolcVideoSDK
-
-# 初始化
-sdk = VolcVideoSDK(api_key="your-api-key")
-
-# 文生视频
-video = sdk.generate(
-    prompt="一只小猫在草地上奔跑，阳光明媚",
-    duration=5
-)
-print(f"视频 URL: {video['video_url']}")
-
-# 首帧生视频
-video = sdk.generate_from_first_frame(
-    first_frame_path="cat.jpg",
-    prompt="小猫开始奔跑，镜头跟随",
-    duration=5
-)
-
-# 首尾帧生视频（核心功能！）
-video = sdk.generate_from_first_last_frames(
-    first_frame_path="logo.png",
-    last_frame_path="qrcode.png",
-    prompt="科技感粒子特效过渡，蓝色光效",
-    duration=10
-)
-```
+### Event Previews
+- First frame: Event theme poster
+- Middle: Event highlights / guest introduction
+- Last frame: Time/location + registration entrance
 
 ---
 
-## 💼 应用场景
+## 📊 Technical Comparison
 
-### 企业宣传片
-- 首帧：公司 Logo + 名称
-- 中间：AI 生成产品展示/团队风采
-- 尾帧：联系方式 + 二维码
-
-### 产品广告
-- 首帧：产品特写
-- 中间：使用场景展示
-- 尾帧：购买链接 + 优惠信息
-
-### 课程推广
-- 首帧：讲师照片 + 课程标题
-- 中间：课程内容亮点
-- 尾帧：报名二维码
-
-### 活动预告
-- 首帧：活动主题海报
-- 中间：活动亮点/嘉宾介绍
-- 尾帧：时间地点 + 报名入口
+| Feature | Standard AI Video | This Tool |
+|---------|------------------|-----------|
+| **First Frame Control** | ❌ Not supported | ✅ Precision control |
+| **Last Frame Control** | ❌ Not supported | ✅ Precision control |
+| **Middle Transition** | ❌ Hard cut/jump | ✅ AI smooth interpolation |
+| **Character Consistency** | ⚠️ Easy to deform | ✅ Reference image lock |
+| **Single Segment Duration** | 5 seconds | 4-12 seconds |
+| **Total Duration** | 5 seconds | ♾️ Unlimited (via chaining) |
+| **Seamless Stitching** | ❌ Not supported | ✅ First-last frame connection |
+| **Use Cases** | Short videos | Micro-films/Education/Promos |
 
 ---
 
-## 📊 技术对比
-
-| 功能 | 普通 AI 视频 | 本工具 |
-|------|------------|--------|
-| **首帧控制** | ❌ 不支持 | ✅ 精确控制 |
-| **尾帧控制** | ❌ 不支持 | ✅ 精确控制 |
-| **中间过渡** | ❌ 硬切/跳跃 | ✅ AI 流畅插值 |
-| **角色一致性** | ⚠️ 容易变形 | ✅ 参考图锁定 |
-| **单段时长** | 5 秒 | 4-12 秒 |
-| **总时长** | 5 秒 | ♾️ 无限（通过拼接） |
-| **无缝拼接** | ❌ 不支持 | ✅ 首尾帧衔接 |
-| **适用场景** | 短视频 | 微电影/教学/宣传片 |
-
----
-
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
-ai-video-consistent/
-├── volc_video_sdk.py       # 核心 SDK
-├── SKILL.md                # 完整文档
-├── README.md               # 使用说明
-├── LICENSE                 # MIT 许可证
+ai-long-video/
+├── volc_video_sdk.py       # Core SDK
+├── volc_image_sdk.py       # Image generation SDK
+├── SKILL.md                # Complete documentation
+├── README.md               # This file
+├── CONFIG.md               # Configuration guide
+├── TROUBLESHOOTING.md      # ⭐ Pitfall guide - Must read!
+├── LICENSE                 # MIT License
 ├── examples/
-│   ├── basic_usage.py      # 基础示例
-│   ├── consistent_video.py # 一致性视频示例
-│   └── first_last_frames.py # 首尾帧示例
+│   ├── project_001/        # Project 001 examples
+│   ├── project_002/        # Project 002 examples
+│   └── project_003_v2/     # Project 003 V2 automation scripts
 └── docs/
-    ├── API_REFERENCE.md    # API 参考
-    └── BEST_PRACTICES.md   # 最佳实践
+    ├── API_REFERENCE.md    # API reference
+    └── BEST_PRACTICES.md   # Best practices
 ```
 
 ---
 
-## 🔧 API 参数说明
+## 🔧 API Parameters
 
 ### generate_from_first_last_frames
 
 ```python
 def generate_from_first_last_frames(
-    first_frame_path: str,    # 首帧图片路径
-    last_frame_path: str,     # 尾帧图片路径
-    prompt: str = "",         # 视频描述（可选）
-    model: str = "ep-20260227022253-b67vh",  # 模型 ID
-    watermark: bool = True,   # 是否添加水印
-    duration: int = 5         # 时长（5 或 10 秒）
+    first_frame_path: str,    # Path to first frame image
+    last_frame_path: str,     # Path to last frame image
+    prompt: str = "",         # Video description (optional)
+    model: str = "ep-20260227022253-b67vh",  # Model ID
+    watermark: bool = True,   # Whether to add watermark
+    duration: int = 5         # Duration (4-12 seconds)
 ) -> dict
 ```
 
-**返回值**:
+**Return Value**:
 ```python
 {
     "task_id": "cgt-20260322123456-xxxxx",
@@ -313,135 +269,150 @@ def generate_from_first_last_frames(
 
 ---
 
-## 💰 计费说明
+## 💰 Pricing
 
-**火山引擎 Seedance 1.5 Pro**:
+**Volcengine Seedance 1.5 Pro**:
 
-- 5 秒视频：~0.05 元/条
-- 10 秒视频：~0.10 元/条
-- 首尾帧功能：**免费**（包含在基础 API 中）
+- 5-second video: ~¥0.05 CNY
+- 10-second video: ~¥0.10 CNY
+- First-last frame feature: **Free** (included in base API)
 
-详细计费标准请参考：https://www.volcengine.com/docs/82379/1399008
+For detailed pricing, see: https://www.volcengine.com/docs/82379/1399008
 
 ---
 
-## 🎓 示例代码
+## 🎓 Code Examples
 
-### 示例 1：企业宣传片
+### Example 1: Corporate Promotional Video
 
 ```python
 from volc_video_sdk import VolcVideoSDK
 
 sdk = VolcVideoSDK(api_key="your-api-key")
 
-# 生成企业宣传片
+# Generate corporate promo
 video = sdk.generate_from_first_last_frames(
     first_frame_path="company_logo.png",
     last_frame_path="contact_qrcode.png",
-    prompt="科技感蓝色粒子特效，光线流动，专业大气",
+    prompt="Tech blue particle effects, light flow, professional atmosphere",
     duration=10,
     watermark=False
 )
 
-print(f"企业宣传片生成成功：{video['video_url']}")
+print(f"Corporate promo generated: {video['video_url']}")
 ```
 
-### 示例 2：产品广告
+### Example 2: Product Advertisement
 
 ```python
-# 生成产品广告
+# Generate product ad
 video = sdk.generate(
-    prompt="智能手机展示，360 度旋转，屏幕亮起显示功能界面",
+    prompt="Smartphone showcase, 360-degree rotation, screen lights up showing features",
     duration=5,
     watermark=False
 )
 ```
 
-### 示例 3：多段拼接长视频
+### Example 3: Multi-segment Long Video
 
 ```python
-# 生成 3 个片段
-video1 = sdk.generate(prompt="开场动画", duration=5)
+# Generate 3 segments
+video1 = sdk.generate(prompt="Opening animation", duration=5)
 video2 = sdk.generate_from_first_last_frames(
     first_frame="product.jpg",
     last_frame="price.png",
-    prompt="产品展示过渡",
+    prompt="Product showcase transition",
     duration=10
 )
-video3 = sdk.generate(prompt="结束动画", duration=5)
+video3 = sdk.generate(prompt="Ending animation", duration=5)
 
-# 使用 FFmpeg 拼接
+# Merge with FFmpeg
 # ffmpeg -i video1.mp4 -i video2.mp4 -i video3.mp4 -filter_complex "[0:v][1:v][2:v]concat=n=3:v=1:a=0" output.mp4
 ```
 
 ---
 
-## 🤝 作为 Agent 技能使用
+## 🤝 Use as Agent Skill
 
-本工具已封装为 CoPaw Skill，可直接集成到 AI Agent 中：
+This tool is packaged as a CoPaw Skill for AI Agent integration:
 
 ```python
-# 在 Agent 中调用
+# Call in Agent
 from volc_video_sdk import VolcVideo
 
 video = VolcVideo()
 result = video.generate_from_first_last_frames(
     first_frame_path="logo.png",
     last_frame_path="qrcode.png",
-    prompt="科技感粒子特效过渡",
+    prompt="Tech particle effects transition",
     duration=10
 )
 ```
 
-详细 Skill 文档请参考：[SKILL.md](SKILL.md)
+For detailed Skill documentation, see: [SKILL.md](SKILL.md)
 
 ---
 
-## 📄 许可证
+## 📚 Important Documentation
 
-MIT License - 详见 [LICENSE](LICENSE) 文件
+| Document | Description |
+|----------|-------------|
+| [SKILL.md](SKILL.md) | Skill usage guide |
+| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | ⭐ **Pitfall Guide** - Must read! |
+| [CONFIG.md](CONFIG.md) | Configuration & path setup |
+| [MAINTENANCE_GUIDE.md](MAINTENANCE_GUIDE.md) | Maintenance guide |
+| [SECURITY_CHECK.md](SECURITY_CHECK.md) | Security audit report |
+
+**Strongly recommend reading [TROUBLESHOOTING.md](TROUBLESHOOTING.md) first** to avoid common pitfalls!
 
 ---
 
-## 🙏 致谢
+## 📄 License
 
-- **火山引擎** - 提供强大的视频生成 API
-- **CoPaw** - Agent 框架支持
-- **社区贡献者** - 感谢所有提 Issue 和 PR 的朋友
+MIT License - See [LICENSE](LICENSE) file for details
 
 ---
 
-## 📮 问题反馈
+## 🙏 Acknowledgments
 
-如有问题或建议，欢迎提 [Issue](https://github.com/jcs130/ai-long-video/issues)
+- **Volcengine** - For powerful video generation API
+- **CoPaw** - For Agent framework support
+- **Community Contributors** - Thanks to everyone who filed Issues and PRs
+
+---
+
+## 📮 Issue Reporting
+
+For questions or suggestions, please file an [Issue](https://github.com/jcs130/ai-long-video/issues)
 
 ---
 
 ## ⭐ Star History
 
-如果这个项目对你有帮助，请给个 Star！🌟
+If this project helps you, please give it a Star! 🌟
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jcs130/ai-video-consistent&type=Date)](https://star-history.com/#jcs130/ai-video-consistent&Date)
-
----
-
-*最后更新：2026-03-29*
+[![Star History Chart](https://api.star-history.com/svg?repos=jcs130/ai-long-video&type=Date)](https://star-history.com/#jcs130/ai-long-video&Date)
 
 ---
 
-## 📝 更新日志
+*Last updated: 2026-03-29*
+
+---
+
+## 📝 Changelog
 
 ### 2026-03-29
-- ✅ Project 003 完成（木屋烧烤宣传片）
-- ✅ 添加角色设计工作流
-- ✅ 添加视频时长充分利用经验（4-12 秒）
-- ✅ 更新 SKILL.md 踩坑#12
+- ✅ Project 003 completed (Muwu BBQ promotional video)
+- ✅ Added character design workflow
+- ✅ Added video duration optimization tips (4-12 seconds)
+- ✅ Updated SKILL.md pitfalls #12/#14/#15
+- ✅ Added complete automation workflow scripts
 
 ### 2026-03-28
-- ✅ Project 002 完成（一拳超人 vs 鸣人）
-- ✅ 添加多角色配音支持
-- ✅ 添加音画同步工作流
+- ✅ Project 002 completed (One Punch Man vs Naruto)
+- ✅ Added multi-role voiceover support
+- ✅ Added audio-video sync workflow
 
 ### 2026-03-27
-- ✅ Project 001 完成（AI 做视频介绍）
-- ✅ 首尾帧工作流验证通过
+- ✅ Project 001 completed (AI video introduction)
+- ✅ First-last frame workflow validated
